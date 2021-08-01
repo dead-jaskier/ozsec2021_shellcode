@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Data;
+using System.Diagnostics;
 
 namespace ozsec2021_shellcode
 {
