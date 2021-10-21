@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "ozsec2021_shellcode": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    }
+  }
+}
